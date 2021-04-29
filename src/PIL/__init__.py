@@ -89,7 +89,6 @@ _plugins = [
     "CurImagePlugin",
     "DcxImagePlugin",
     "DdsImagePlugin",
-    "EpsImagePlugin",
     "FitsStubImagePlugin",
     "FliImagePlugin",
     "FpxImagePlugin",
