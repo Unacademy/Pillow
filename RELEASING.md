@@ -1,6 +1,6 @@
 # Release Checklist
 
-## Main Release
+## Main Releas
 
 Released quarterly on the first day of January, April, July, October.
 
