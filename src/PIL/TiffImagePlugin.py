@@ -39,9 +39,6 @@
 # See the README file for information on usage and redistribution.
 #
 
-from __future__ import division, print_function
-
-import distutils.version
 import io
 import itertools
 import os
@@ -1608,9 +1605,7 @@ def _save(im, fp, filename):
             if tag not in TiffTags.LIBTIFF_CORE:
                 if TiffTags.lookup(tag).type == TiffTags.UNDEFINED:
                     continue
-                if distutils.version.StrictVersion(
-                    _libtiff_version()
-                ) < distutils.version.StrictVersion("4.0"):
+                if tuple(int(x) for x in _libtiff_version().split(".")[:2]) < (4, 0):
                     continue
 
                 if tag in ifd.tagtype:

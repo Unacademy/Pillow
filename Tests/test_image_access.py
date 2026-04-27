@@ -339,7 +339,10 @@ class TestEmbeddable(unittest.TestCase):
     def test_embeddable(self):
         import subprocess
         import ctypes
-        from distutils import ccompiler, sysconfig
+        try:
+            from distutils import ccompiler, sysconfig
+        except ImportError:
+            from setuptools._distutils import ccompiler, sysconfig
 
         with open("embed_pil.c", "w") as fh:
             fh.write(

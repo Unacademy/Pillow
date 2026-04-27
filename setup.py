@@ -7,16 +7,19 @@
 # Final rating: 10/10
 # Your cheese is so fresh most people think it's a cream: Mascarpone
 # ------------------------------
-from __future__ import print_function
-
 import os
 import re
 import struct
 import subprocess
 import sys
 import warnings
-from distutils import ccompiler, sysconfig
-from distutils.command.build_ext import build_ext
+
+try:
+    from distutils import ccompiler, sysconfig
+    from distutils.command.build_ext import build_ext
+except ImportError:
+    from setuptools._distutils import ccompiler, sysconfig
+    from setuptools.command.build_ext import build_ext
 
 from setuptools import Extension, setup
 
@@ -119,7 +122,10 @@ PLATFORM_MINGW = "mingw" in ccompiler.get_default_compiler()
 PLATFORM_PYPY = hasattr(sys, "pypy_version_info")
 
 if sys.platform == "win32" and PLATFORM_MINGW:
-    from distutils import cygwinccompiler
+    try:
+        from distutils import cygwinccompiler
+    except ImportError:
+        from setuptools._distutils import cygwinccompiler
 
     cygwin_versions = cygwinccompiler.get_versions()
     if cygwin_versions[1] is None:
@@ -861,13 +867,12 @@ try:
         classifiers=[
             "Development Status :: 6 - Mature",
             "License :: OSI Approved :: Historical Permission Notice and Disclaimer (HPND)",  # noqa: E501
-            "Programming Language :: Python :: 2",
-            "Programming Language :: Python :: 2.7",
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.5",
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.12",
             "Programming Language :: Python :: Implementation :: CPython",
             "Programming Language :: Python :: Implementation :: PyPy",
             "Topic :: Multimedia :: Graphics",
@@ -876,7 +881,7 @@ try:
             "Topic :: Multimedia :: Graphics :: Graphics Conversion",
             "Topic :: Multimedia :: Graphics :: Viewers",
         ],
-        python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
+        python_requires=">=3.8",
         cmdclass={"build_ext": pil_build_ext},
         ext_modules=[Extension("PIL._imaging", ["_imaging.c"])],
         include_package_data=True,

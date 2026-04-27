@@ -3,11 +3,14 @@
 # Only applied on Python 2.7 because otherwise, it conflicts with Python's
 # own newly-added support for parallel builds.
 
-from __future__ import print_function
-
 import os
 import sys
-from distutils.ccompiler import CCompiler
+
+try:
+    from distutils.ccompiler import CCompiler
+except ImportError:
+    from setuptools._distutils.ccompiler import CCompiler
+
 from multiprocessing import Pool, cpu_count
 
 try:
@@ -88,6 +91,4 @@ def install():
         )
 
 
-# We monkeypatch Python 2.7
-if sys.version_info.major < 3:
-    install()
+install()

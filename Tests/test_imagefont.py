@@ -1,6 +1,30 @@
 # -*- coding: utf-8 -*-
 import copy
-import distutils.version
+
+
+class _Version:
+    def __init__(self, v):
+        self._t = tuple(int(x) for x in str(v).split(".")[:3] if x.isdigit())
+
+    def _coerce(self, other):
+        if isinstance(other, _Version):
+            return other._t
+        return tuple(int(x) for x in str(other).split(".")[:3] if x.isdigit())
+
+    def __lt__(self, other):
+        return self._t < self._coerce(other)
+
+    def __le__(self, other):
+        return self._t <= self._coerce(other)
+
+    def __gt__(self, other):
+        return self._t > self._coerce(other)
+
+    def __ge__(self, other):
+        return self._t >= self._coerce(other)
+
+    def __eq__(self, other):
+        return self._t == self._coerce(other)
 import os
 import re
 import shutil
@@ -59,7 +83,7 @@ class TestImageFont(PillowTestCase):
     }
 
     def setUp(self):
-        freetype = distutils.version.StrictVersion(ImageFont.core.freetype2_version)
+        freetype = _Version(ImageFont.core.freetype2_version)
 
         self.metrics = self.METRICS["Default"]
         for conditions, metrics in self.METRICS.items():
@@ -632,7 +656,7 @@ class TestImageFont(PillowTestCase):
     def test_variation_get(self):
         font = self.get_font()
 
-        freetype = distutils.version.StrictVersion(ImageFont.core.freetype2_version)
+        freetype = _Version(ImageFont.core.freetype2_version)
         if freetype < "2.9.1":
             self.assertRaises(NotImplementedError, font.get_variation_names)
             self.assertRaises(NotImplementedError, font.get_variation_axes)
@@ -694,7 +718,7 @@ class TestImageFont(PillowTestCase):
     def test_variation_set_by_name(self):
         font = self.get_font()
 
-        freetype = distutils.version.StrictVersion(ImageFont.core.freetype2_version)
+        freetype = _Version(ImageFont.core.freetype2_version)
         if freetype < "2.9.1":
             self.assertRaises(NotImplementedError, font.set_variation_by_name, "Bold")
             return
@@ -724,7 +748,7 @@ class TestImageFont(PillowTestCase):
     def test_variation_set_by_axes(self):
         font = self.get_font()
 
-        freetype = distutils.version.StrictVersion(ImageFont.core.freetype2_version)
+        freetype = _Version(ImageFont.core.freetype2_version)
         if freetype < "2.9.1":
             self.assertRaises(NotImplementedError, font.set_variation_by_axes, [100])
             return

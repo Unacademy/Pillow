@@ -956,7 +956,7 @@ font_render(FontObject* self, PyObject* args)
     }
 
     FT_Stroker_Done(stroker);
-    PyMem_Del(glyph_info);
+    PyMem_Free(glyph_info);
     Py_RETURN_NONE;
 }
 

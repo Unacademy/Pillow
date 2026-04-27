@@ -1,6 +1,3 @@
-from __future__ import print_function
-
-import distutils.version
 import io
 import itertools
 import logging
@@ -287,9 +284,7 @@ class TestFileLibTiff(LibTiffTestCase):
         libtiff_version = TiffImagePlugin._libtiff_version()
 
         libtiffs = [False]
-        if distutils.version.StrictVersion(
-            libtiff_version
-        ) >= distutils.version.StrictVersion("4.0"):
+        if tuple(int(x) for x in libtiff_version.split(".")[:2]) >= (4, 0):
             libtiffs.append(True)
 
         for libtiff in libtiffs:
